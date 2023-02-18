@@ -1,0 +1,13 @@
+name: Persephone
+version: '${version}'
+main: de.zonlykroks.persephone.Persephone
+api-version: 1.19
+authors: [ zOnlyKroks ]
+description: Persophone Anticheat
+softdepend:
+  - ProtocolLib
+  - ProtocolSupport
+  - ViaVersion
+  - ViaBackwards
+  - ViaRewind
+  - Geyser-Spigot
