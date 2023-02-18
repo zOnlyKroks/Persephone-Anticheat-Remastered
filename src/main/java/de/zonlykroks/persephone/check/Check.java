@@ -24,7 +24,7 @@ public class Check extends PacketListenerAbstract {
         violations++;
 
         if(setback && violations > setbackVL) {
-            Bukkit.getOnlinePlayers().forEach(player1 -> player1.sendMessage(debug));
+            Bukkit.getOnlinePlayers().forEach(player1 -> player1.sendMessage(this.name + " : " + debug));
         }
     }
 }

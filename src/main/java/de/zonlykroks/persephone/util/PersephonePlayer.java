@@ -38,7 +38,7 @@ public class PersephonePlayer {
 
     public double currentY,lastY;
 
-    public double deltaY,lastDeltaY,accel;
+    public double deltaY,lastDeltaY,deltaX,lastDeltaX,deltaZ,lastDeltaZ,accel;
 
     public Location placedBlockPosition;
     public BlockFace placedBlockFace;
