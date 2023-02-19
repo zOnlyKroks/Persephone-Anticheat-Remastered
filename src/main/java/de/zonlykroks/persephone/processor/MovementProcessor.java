@@ -7,6 +7,7 @@ import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerFlying;
 import de.zonlykroks.persephone.util.PersephonePlayer;
 import de.zonlykroks.persephone.util.PlayerUtils;
+import io.github.retrooper.packetevents.util.SpigotConversionUtil;
 import org.bukkit.Location;
 
 public class MovementProcessor extends PacketListenerAbstract {
@@ -25,6 +26,10 @@ public class MovementProcessor extends PacketListenerAbstract {
 
             persephonePlayer.clientLastOnGround = persephonePlayer.clientOnGround;
             persephonePlayer.clientOnGround = wrapperPlayClientPlayerFlying.isOnGround();
+
+            persephonePlayer.lastLastServerGround = persephonePlayer.lastServerGround;
+            persephonePlayer.lastServerGround = persephonePlayer.serverGround;
+            persephonePlayer.serverGround = PlayerUtils.isOnGround(SpigotConversionUtil.toBukkitLocation(persephonePlayer.bukkitPlayer.getWorld(),wrapperPlayClientPlayerFlying.getLocation()));
 
             persephonePlayer.from = persephonePlayer.to;
             persephonePlayer.to = new Location(persephonePlayer.bukkitPlayer.getWorld(),wrapperPlayClientPlayerFlying.getLocation().getX(),wrapperPlayClientPlayerFlying.getLocation().getY(),wrapperPlayClientPlayerFlying.getLocation().getZ());
@@ -48,6 +53,12 @@ public class MovementProcessor extends PacketListenerAbstract {
 
             persephonePlayer.lastDeltaYaw = persephonePlayer.deltaYaw;
             persephonePlayer.deltaYaw = Math.abs(persephonePlayer.deltaYaw - persephonePlayer.lastDeltaYaw);
+
+            persephonePlayer.lastX = persephonePlayer.currentX;
+            persephonePlayer.currentX = wrapperPlayClientPlayerFlying.getLocation().getX();
+
+            persephonePlayer.lastY = persephonePlayer.currentY;
+            persephonePlayer.currentY = wrapperPlayClientPlayerFlying.getLocation().getY();
 
             persephonePlayer.getActionProcessor().handleFlying();
 

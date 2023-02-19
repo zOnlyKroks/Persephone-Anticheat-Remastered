@@ -2,10 +2,7 @@ package de.zonlykroks.persephone.util;
 
 import com.github.retrooper.packetevents.protocol.world.BlockFace;
 import de.zonlykroks.persephone.check.PlayerSpecificCheckInitiator;
-import de.zonlykroks.persephone.processor.ActionProcessor;
-import de.zonlykroks.persephone.processor.BlockProcessor;
-import de.zonlykroks.persephone.processor.CombatProcessor;
-import de.zonlykroks.persephone.processor.MovementProcessor;
+import de.zonlykroks.persephone.processor.*;
 import lombok.Getter;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -28,6 +25,8 @@ public class PersephonePlayer {
     @Deprecated
     public boolean clientOnGround,clientLastOnGround;
 
+    public boolean serverGround,lastServerGround,lastLastServerGround;
+
     public float pitch,lastPitch;
 
     public float deltaPitch,lastDeltaPitch;
@@ -36,7 +35,7 @@ public class PersephonePlayer {
 
     public float deltaYaw,lastDeltaYaw;
 
-    public double currentY,lastY;
+    public double currentY,lastY,currentX,lastX,currentZ,lastZ;
 
     public double deltaY,lastDeltaY,deltaX,lastDeltaX,deltaZ,lastDeltaZ,accel;
 
@@ -55,7 +54,11 @@ public class PersephonePlayer {
 
     private final ActionProcessor actionProcessor;
 
-    public boolean sprinting, sneaking, sendingAction, placing;
+    private final OtherProcessor otherProcessor;
+
+    public boolean sprinting, sneaking, sendingAction, placing, isAttacking,isSwinging;
+
+    public boolean isWindowOpen;
 
     public double combatNPCHits = 0;
 
@@ -70,6 +73,8 @@ public class PersephonePlayer {
         blockProcessor = new BlockProcessor(this);
         combatProcessor = new CombatProcessor(this);
         actionProcessor = new ActionProcessor(this);
+        otherProcessor = new OtherProcessor(this);
+
 
         playerSpecificCheckInitiator = new PlayerSpecificCheckInitiator();
         playerSpecificCheckInitiator.registerChecksForPlayer(player);

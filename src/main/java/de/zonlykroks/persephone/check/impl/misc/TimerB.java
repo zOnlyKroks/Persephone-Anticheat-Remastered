@@ -6,6 +6,7 @@ import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPl
 import de.zonlykroks.persephone.check.Check;
 import de.zonlykroks.persephone.check.CheckData;
 import de.zonlykroks.persephone.util.EvictingList;
+import de.zonlykroks.persephone.util.MathUtil;
 import de.zonlykroks.persephone.util.PersephonePlayer;
 
 import java.util.Collection;
@@ -31,7 +32,7 @@ public class TimerB extends Check {
             }
 
             if (samples.isFull()) {
-                final double average = getAverage(samples);
+                final double average = MathUtil.getAverage(samples);
                 final double speed = 50 / average;
 
                 if (speed >= 1.01) {
@@ -48,9 +49,5 @@ public class TimerB extends Check {
         } else if (event.getPacketType() == PacketType.Play.Client.PLAYER_POSITION || event.getPacketType() == PacketType.Play.Client.PLAYER_POSITION_AND_ROTATION) {
             samples.add(135L); //Magic value. 100L doesn't completely fix it for some reason.
         }
-    }
-
-    public static double getAverage(final Collection<? extends Number> data) {
-        return data.stream().mapToDouble(Number::doubleValue).average().orElse(0D);
     }
 }

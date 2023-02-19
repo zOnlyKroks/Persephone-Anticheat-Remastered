@@ -21,6 +21,9 @@ public class Check extends PacketListenerAbstract {
     }
 
     public void flag(String debug) {
+
+        if(player.isPlayerExempt()) return;
+
         violations++;
 
         if(setback && violations > setbackVL) {

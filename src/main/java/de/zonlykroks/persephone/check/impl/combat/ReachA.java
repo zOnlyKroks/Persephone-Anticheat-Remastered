@@ -12,7 +12,7 @@ public class ReachA extends Check {
 
     private int reachThreshold = 0;
 
-    private final float baseReach = 3.4F;
+    private final float maxReach = 3.000001F;
 
     public ReachA(PersephonePlayer player) {
         super(player);
@@ -26,11 +26,12 @@ public class ReachA extends Check {
 
         if(player.attackedEntity == null || player.lastAttackedEntity == null) return;
 
-        double dist = player.attackedEntity.getLocation().distance(player.bukkitPlayer.getLocation());
+        double x = Math.abs(player.bukkitPlayer.getLocation().getX() - player.attackedEntity.getLocation().getX());
+        double z = Math.abs(player.bukkitPlayer.getLocation().getZ() - player.attackedEntity.getLocation().getZ());
 
-        if(dist > baseReach) {
+        if(x > maxReach || z > maxReach) {
             if(reachThreshold++ > 10) {
-                this.flag("Player Reach to high, allowed: " + baseReach + " , current:" + dist);
+                this.flag("Player Reach to high, allowed: " + maxReach + " , current x: " + x + " , current z: " + z);
             }
         }else reachThreshold -= reachThreshold > 0 ? 1 : 0;
     }

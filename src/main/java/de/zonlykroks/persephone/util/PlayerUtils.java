@@ -3,6 +3,7 @@ package de.zonlykroks.persephone.util;
 import lombok.experimental.UtilityClass;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 @UtilityClass
@@ -31,4 +32,22 @@ public class PlayerUtils {
         return player.getInventory().getItemInMainHand().getType().toString().contains("SWORD") || player.getInventory().getItemInOffHand().getType().toString().contains("SWORD");
     }
 
+    public boolean isInLiquid(final Player player) {
+        final double expand = 0.31;
+        final Location location = player.getLocation();
+        for (double x = -expand; x <= expand; x += expand) {
+            for (double z = -expand; z <= expand; z += expand) {
+                if (getBlockAsync(location.clone().add(x, -0.5001, z)).isLiquid()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private Block getBlockAsync(final Location loc) {
+        if (loc.getWorld().isChunkLoaded(loc.getBlockX() >> 4, loc.getBlockZ() >> 4))
+            return loc.getBlock();
+        return null;
+    }
 }

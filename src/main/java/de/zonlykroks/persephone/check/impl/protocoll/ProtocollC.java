@@ -26,9 +26,13 @@ public class ProtocollC extends Check {
 
             if(allowFlight) return;
 
-            if(wrapperPlayClientPlayerAbilities.isFlightAllowed().get() != allowFlight) {
-                this.flag("Player changed abilities");
-                player.bukkitPlayer.kickPlayer("");
+            boolean flightClientAllowedPresent = wrapperPlayClientPlayerAbilities.isFlightAllowed().isPresent();
+
+            if(flightClientAllowedPresent) {
+                if(wrapperPlayClientPlayerAbilities.isFlightAllowed().get()) {
+                    this.flag("Player changed abilities");
+                    player.bukkitPlayer.kickPlayer("");
+                }
             }
         }
     }
