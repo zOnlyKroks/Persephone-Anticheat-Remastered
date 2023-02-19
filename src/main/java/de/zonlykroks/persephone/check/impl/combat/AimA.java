@@ -6,7 +6,7 @@ import de.zonlykroks.persephone.check.Check;
 import de.zonlykroks.persephone.check.CheckData;
 import de.zonlykroks.persephone.util.PersephonePlayer;
 
-@CheckData(name = "Aim", checkType = "A")
+@CheckData(name = "Aim", checkType = "A", setback = false)
 public class AimA extends Check {
 
     public AimA(PersephonePlayer player) {

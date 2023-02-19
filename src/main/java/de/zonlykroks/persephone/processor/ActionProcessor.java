@@ -38,13 +38,4 @@ public class ActionProcessor extends PacketListenerAbstract {
             }
         }
     }
-
-    public void handleFlying() {
-        persephonePlayer.sendingAction = false;
-        persephonePlayer.placing = false;
-    }
-
-    public void handleBlockPlace() {
-        persephonePlayer.placing = true;
-    }
 }

@@ -24,10 +24,10 @@ public class FlyA extends Check {
 
         if(player.bukkitPlayer.getVehicle() != null || player.bukkitPlayer.getLocation().getBlock().isLiquid() ||  player.bukkitPlayer.getLocation().add(0,-1,0).getBlock().isLiquid() || PlayerUtils.isOnGround(player.bukkitPlayer.getLocation())) return;
 
-        if(player.airTicks > 2 && player.accel < 0.01) {
+        if(player.airTicks > 2 && player.accelY < 0.01) {
             if(flyThreshold++ > 2) {
-                this.flag("Player acceleration too small for " + player.airTicks + " ticks, current :" + player.accel);
+                this.flag("Player acceleration too small for " + player.airTicks + " ticks, current :" + player.accelY);
             }
-        }else flyThreshold -= flyThreshold > 0 ? 0.1f : 0f;
+        }else flyThreshold -= flyThreshold > 0 ? 0.5f : 0f;
     }
 }

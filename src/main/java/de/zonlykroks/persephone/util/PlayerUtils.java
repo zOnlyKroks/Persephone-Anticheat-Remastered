@@ -3,11 +3,13 @@ package de.zonlykroks.persephone.util;
 import lombok.experimental.UtilityClass;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 @UtilityClass
 public class PlayerUtils {
+
+    public static final double PLAYER_WIDTH = .6;
+    private static final MaterialCheck CHECK_STAIR, CHECK_STEP;
 
     public static boolean isOnClimbable(Player player) {
         if(player.getLocation().getBlock().getType() == Material.LADDER || player.getLocation().getBlock().getType() == Material.VINE ){
@@ -37,7 +39,7 @@ public class PlayerUtils {
         final Location location = player.getLocation();
         for (double x = -expand; x <= expand; x += expand) {
             for (double z = -expand; z <= expand; z += expand) {
-                if (getBlockAsync(location.clone().add(x, -0.5001, z)).isLiquid()) {
+                if (location.clone().add(x, -0.5001, z).getBlock().isLiquid()) {
                     return true;
                 }
             }
@@ -45,9 +47,44 @@ public class PlayerUtils {
         return false;
     }
 
-    private Block getBlockAsync(final Location loc) {
-        if (loc.getWorld().isChunkLoaded(loc.getBlockX() >> 4, loc.getBlockZ() >> 4))
-            return loc.getBlock();
-        return null;
+    public static boolean isStepping(Location location) {
+        return isColliding(location, CHECK_STAIR) || isColliding(location, CHECK_STEP);
+    }
+
+    public static boolean isColliding(Location location, MaterialCheck material) {
+        double d = PLAYER_WIDTH/2;
+        return material.checkMaterial(location)
+                || material.checkMaterial(location.clone().add( d, 0, 0))
+                || material.checkMaterial(location.clone().add(-d, 0, 0))
+                || material.checkMaterial(location.clone().add( d, 0,  d))
+                || material.checkMaterial(location.clone().add(-d, 0,  d))
+                || material.checkMaterial(location.clone().add( d, 0, -d))
+                || material.checkMaterial(location.clone().add(-d, 0, -d))
+                || material.checkMaterial(location.clone().add(0,  0, -d))
+                || material.checkMaterial(location.clone().add(0,  0,  d));
+    }
+
+    static {
+        CHECK_STAIR = new MaterialCheck() {
+
+            @Override
+            public boolean checkMaterial(Material material) {
+                return switch (material) {
+                    case ACACIA_STAIRS, BRICK_STAIRS, COBBLESTONE_STAIRS, DARK_OAK_STAIRS, NETHER_BRICK_STAIRS, QUARTZ_STAIRS, RED_SANDSTONE_STAIRS, SANDSTONE_STAIRS ->
+                            true;
+                    default -> false;
+                };
+            }
+        };
+        CHECK_STEP = new MaterialCheck() {
+
+            @Override
+            public boolean checkMaterial(Material material) {
+                return switch (material) {
+                    case LEGACY_STEP, LEGACY_WOOD_STEP -> true;
+                    default -> false;
+                };
+            }
+        };
     }
 }

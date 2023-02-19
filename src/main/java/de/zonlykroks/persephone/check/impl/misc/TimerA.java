@@ -1,16 +1,18 @@
 package de.zonlykroks.persephone.check.impl.misc;
 
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
-import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerFlying;
 import de.zonlykroks.persephone.check.Check;
 import de.zonlykroks.persephone.check.CheckData;
+import de.zonlykroks.persephone.util.EvictingList;
+import de.zonlykroks.persephone.util.MathUtil;
 import de.zonlykroks.persephone.util.PersephonePlayer;
 
-@CheckData(name = "Check", checkType = "A")
+@CheckData(name = "Timer", checkType = "A")
 public class TimerA extends Check {
 
-    private long lastFlying;
+    private final EvictingList<Long> samples = new EvictingList<>(50);
+    private long lastFlyingTime;
 
     public TimerA(PersephonePlayer player) {
         super(player);
@@ -18,22 +20,31 @@ public class TimerA extends Check {
 
     @Override
     public void onPacketReceive(PacketReceiveEvent event) {
-        final boolean flying = WrapperPlayClientPlayerFlying.isFlying(event.getPacketType());
-        if (flying) {
-            long now = System.currentTimeMillis();
-            if (lastFlying + 47L > now) {
-                double timerSpeed = 50.0 / (now - lastFlying);
-                if (++buffer > 7) {
-                    this.flag("timerSpeed:" + timerSpeed);
-                }
-            } else if (lastFlying + 70L < now) {
-                buffer -= 3;
-            } else if (buffer > 0) {
-                buffer--;
+        if (WrapperPlayClientPlayerFlying.isFlying(event.getPacketType())) {
+            final long now = System.currentTimeMillis();
+            final long delta = now - lastFlyingTime;
+
+            if (delta > 1) {
+                samples.add(delta);
             }
-            lastFlying = now;
-        }else if(event.getPacketType() == PacketType.Play.Client.PLAYER_POSITION || event.getPacketType() == PacketType.Play.Client.PLAYER_POSITION_AND_ROTATION) {
-            buffer = -10;
+
+            if (samples.isFull()) {
+                final double average = MathUtil.getAverage(samples);
+                final double speed = 50 / average;
+
+                if (speed >= 1.01) {
+                    if (++buffer > 30) {
+                        buffer = Math.min(buffer, 50);
+                        this.flag(String.format("speed=%.4f, delta=%o, buffer=%.2f", speed, delta, buffer));
+                    }
+                } else {
+                    buffer -= buffer > 0 ? 1 : 0;
+                }
+            }
+
+            lastFlyingTime = now;
+        } else if (WrapperPlayClientPlayerFlying.isFlying(event.getPacketType())) {
+            samples.add(135L); //Magic value. 100L doesn't completely fix it for some reason.
         }
     }
 }

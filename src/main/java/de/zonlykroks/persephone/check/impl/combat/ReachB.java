@@ -13,7 +13,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 
-@CheckData(name = "Reach", checkType = "B")
+@CheckData(name = "Reach", checkType = "B",setback = false)
 public class ReachB extends Check {
     public ReachB(PersephonePlayer player) {
         super(player);
@@ -21,6 +21,9 @@ public class ReachB extends Check {
 
     @Override
     public void onPacketReceive(PacketReceiveEvent event) {
+
+        if(player.attackedEntity == null) return;
+
         if(event.getPacketType() == PacketType.Play.Client.INTERACT_ENTITY) {
             WrapperPlayClientInteractEntity wrapperPlayClientInteractEntity = new WrapperPlayClientInteractEntity(event);
 

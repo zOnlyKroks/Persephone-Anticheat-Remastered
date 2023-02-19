@@ -36,6 +36,8 @@ public class PlayerSpecificCheckInitiator {
                 check.checkType = annotation.checkType();
                 check.experimental = annotation.experimental();
                 check.setback = annotation.setback();
+                check.damage = annotation.damage();
+                check.damageAmount = annotation.damageAmount();
                 PacketEvents.getAPI().getEventManager().registerListener(check);
             } catch (InstantiationException | NoSuchMethodException | InvocationTargetException |
                      IllegalAccessException e) {

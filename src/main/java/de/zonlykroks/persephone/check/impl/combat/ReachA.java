@@ -7,7 +7,7 @@ import de.zonlykroks.persephone.check.CheckData;
 import de.zonlykroks.persephone.util.PersephonePlayer;
 import org.bukkit.Material;
 
-@CheckData(name = "Reach", checkType = "A")
+@CheckData(name = "Reach", checkType = "A",setback = false)
 public class ReachA extends Check {
 
     private int reachThreshold = 0;

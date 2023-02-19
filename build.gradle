@@ -34,6 +34,8 @@ dependencies {
 
     testCompileOnly 'org.projectlombok:lombok:1.18.26'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.26'
+
+    implementation("com.github.cryptomorin:XSeries:9.2.0")
 }
 
 def targetJavaVersion = 17

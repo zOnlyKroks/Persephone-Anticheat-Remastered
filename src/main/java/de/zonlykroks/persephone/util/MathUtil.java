@@ -2,6 +2,8 @@ package de.zonlykroks.persephone.util;
 
 import org.bukkit.Location;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.Collection;
 
@@ -25,10 +27,6 @@ public class MathUtil {
         return toReturn;
     }
 
-    public static boolean isRoughlyEqual(double a, double b) {
-        return Math.abs(a - b) < 0.001;
-    }
-
     public static double magnitude(final double... points) {
         double sum = 0.0;
 
@@ -37,5 +35,14 @@ public class MathUtil {
         }
 
         return Math.sqrt(sum);
+    }
+
+    public static double round(double value, int places) {
+        if (places < 0)
+            throw new IllegalArgumentException();
+
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 }

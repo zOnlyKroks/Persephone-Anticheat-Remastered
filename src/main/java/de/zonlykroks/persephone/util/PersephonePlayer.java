@@ -25,7 +25,7 @@ public class PersephonePlayer {
     @Deprecated
     public boolean clientOnGround,clientLastOnGround;
 
-    public boolean serverGround,lastServerGround,lastLastServerGround;
+    public boolean serverGround = true,lastServerGround = true,lastLastServerGround = true;
 
     public float pitch,lastPitch;
 
@@ -37,7 +37,9 @@ public class PersephonePlayer {
 
     public double currentY,lastY,currentX,lastX,currentZ,lastZ;
 
-    public double deltaY,lastDeltaY,deltaX,lastDeltaX,deltaZ,lastDeltaZ,accel;
+    public double distanceXZ;
+
+    public double deltaY,lastDeltaY,deltaX,lastDeltaX,deltaZ,lastDeltaZ, accelY;
 
     public Location placedBlockPosition;
     public BlockFace placedBlockFace;
@@ -63,6 +65,10 @@ public class PersephonePlayer {
     public double combatNPCHits = 0;
 
     public int lastHitTicks = 0;
+
+    public float friction;
+
+    public double adjusted;
 
     public PersephonePlayer(Player player) {
         this.bukkitPlayer = player;

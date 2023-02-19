@@ -8,7 +8,7 @@ import de.zonlykroks.persephone.check.Check;
 import de.zonlykroks.persephone.check.CheckData;
 import de.zonlykroks.persephone.util.PersephonePlayer;
 
-@CheckData(name = "KillAura", checkType = "A")
+@CheckData(name = "KillAura", checkType = "A",setback = false)
 public class KillauraA extends Check {
 
     private int ticks, lastEntityId;
@@ -20,6 +20,8 @@ public class KillauraA extends Check {
     @Override
     public void onPacketReceive(PacketReceiveEvent event) {
         if(player.isPlayerExempt()) return;
+
+        if(player.attackedEntity == null) return;
 
         if(event.getPacketType() == PacketType.Play.Client.INTERACT_ENTITY) {
             WrapperPlayClientInteractEntity wrapperPlayClientInteractEntity = new WrapperPlayClientInteractEntity(event);

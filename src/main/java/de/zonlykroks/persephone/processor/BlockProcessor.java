@@ -5,6 +5,7 @@ import com.github.retrooper.packetevents.event.PacketListenerAbstract;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerBlockPlacement;
+import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerFlying;
 import de.zonlykroks.persephone.util.PersephonePlayer;
 import org.bukkit.Location;
 
@@ -20,12 +21,13 @@ public class BlockProcessor extends PacketListenerAbstract {
     @Override
     public void onPacketReceive(PacketReceiveEvent event) {
         if(event.getPacketType() == PacketType.Play.Client.PLAYER_BLOCK_PLACEMENT) {
-
-            persephonePlayer.getActionProcessor().handleBlockPlace();
+            persephonePlayer.placing = true;
 
             WrapperPlayClientPlayerBlockPlacement wrapperPlayClientPlayerBlockPlacement = new WrapperPlayClientPlayerBlockPlacement(event);
             persephonePlayer.placedBlockPosition = new Location(persephonePlayer.bukkitPlayer.getWorld(),wrapperPlayClientPlayerBlockPlacement.getBlockPosition().x,wrapperPlayClientPlayerBlockPlacement.getBlockPosition().y,wrapperPlayClientPlayerBlockPlacement.getBlockPosition().z);
             persephonePlayer.placedBlockFace = wrapperPlayClientPlayerBlockPlacement.getFace();
+        }else if(WrapperPlayClientPlayerFlying.isFlying(event.getPacketType())) {
+            persephonePlayer.placing = false;
         }
     }
 }

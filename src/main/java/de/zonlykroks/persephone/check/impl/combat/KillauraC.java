@@ -2,13 +2,14 @@ package de.zonlykroks.persephone.check.impl.combat;
 
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
+import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientInteractEntity;
 import de.zonlykroks.persephone.check.Check;
 import de.zonlykroks.persephone.check.CheckData;
 import de.zonlykroks.persephone.util.MathUtil;
 import de.zonlykroks.persephone.util.PersephonePlayer;
 import org.bukkit.entity.Player;
 
-@CheckData(name = "Killaura", checkType = "C")
+@CheckData(name = "Killaura", checkType = "C",setback = false)
 public class KillauraC extends Check {
 
     public KillauraC(PersephonePlayer player) {
@@ -20,29 +21,22 @@ public class KillauraC extends Check {
         if(player.isPlayerExempt()) return;
 
         if(event.getPacketType() == PacketType.Play.Client.INTERACT_ENTITY) {
-            Player p = player.bukkitPlayer;
+            WrapperPlayClientInteractEntity wrapperPlayClientInteractEntity = new WrapperPlayClientInteractEntity(event);
 
-            double oy = player.lastYaw;
-            double op = player.lastPitch;
-            double cy = player.yaw;
-            double cp = player.pitch;
-            boolean f_yaw = Math.abs(MathUtil.trim(1, cy - oy)) > 35;
-            boolean f_pitch = Math.abs(MathUtil.trim(1, cp - op)) > 35;
+            if(wrapperPlayClientInteractEntity.getAction() == WrapperPlayClientInteractEntity.InteractAction.ATTACK) {
+                Player p = player.bukkitPlayer;
 
-            if (f_yaw || f_pitch) {
-                flag(" moved his head to quickly");
-            }
+                if (p.isBlocking()) {
+                    flag(" is blocking + attacking in the same moment");
+                }
 
-            if (p.isBlocking()) {
-                flag(" is blocking + attacking in the same moment");
-            }
+                if (p.isSleeping()) {
+                    flag(" is sleeping while attacking");
+                }
 
-            if (p.isSleeping()) {
-                flag(" is sleeping while attacking");
-            }
-
-            if (p.isDead()) {
-                flag(" is dead while hitting");
+                if (p.isDead()) {
+                    flag(" is dead while hitting");
+                }
             }
         }
     }

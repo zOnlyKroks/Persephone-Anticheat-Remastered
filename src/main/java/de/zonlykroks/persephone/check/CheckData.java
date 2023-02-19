@@ -14,4 +14,7 @@ public @interface CheckData {
     boolean experimental() default false;
     int setbackVl() default 10;
     boolean setback() default true;
+
+    boolean damage() default false;
+    float damageAmount() default 0.5F;
 }

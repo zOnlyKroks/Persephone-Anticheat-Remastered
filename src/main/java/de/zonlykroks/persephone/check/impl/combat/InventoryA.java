@@ -4,8 +4,10 @@ import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerFlying;
 import de.zonlykroks.persephone.check.Check;
+import de.zonlykroks.persephone.check.CheckData;
 import de.zonlykroks.persephone.util.PersephonePlayer;
 
+@CheckData(name = "Inventory", checkType = "A", setback = false)
 public class InventoryA extends Check {
 
     private long lastFlying = System.currentTimeMillis();

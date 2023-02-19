@@ -7,7 +7,7 @@ import de.zonlykroks.persephone.check.CheckData;
 import de.zonlykroks.persephone.util.PersephonePlayer;
 import de.zonlykroks.persephone.util.PlayerUtils;
 
-@CheckData(name = "NoFall", checkType = "A")
+@CheckData(name = "NoFall", checkType = "A",damage = true)
 public class NoFallA extends Check {
 
     public NoFallA(PersephonePlayer player) {

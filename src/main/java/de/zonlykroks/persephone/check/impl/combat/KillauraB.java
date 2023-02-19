@@ -9,7 +9,7 @@ import de.zonlykroks.persephone.util.PersephonePlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
 
-@CheckData(name = "Killaura", checkType = "B")
+@CheckData(name = "Killaura", checkType = "B",setback = false)
 public class KillauraB extends Check {
 
     public KillauraB(PersephonePlayer player) {
@@ -20,9 +20,15 @@ public class KillauraB extends Check {
     public void onPacketReceive(PacketReceiveEvent event) {
         if(player.isPlayerExempt()) return;
 
+        if(player.attackedEntity == null) return;
+
         if(event.getPacketType() == PacketType.Play.Client.INTERACT_ENTITY) {
-            if(entityBehindPlayer(player.attackedEntity)) {
-                this.flag("entity=" + player.attackedEntity.getName());
+            WrapperPlayClientInteractEntity wrapperPlayClientInteractEntity = new WrapperPlayClientInteractEntity(event);
+
+            if(wrapperPlayClientInteractEntity.getAction() == WrapperPlayClientInteractEntity.InteractAction.ATTACK) {
+                if(entityBehindPlayer(player.attackedEntity)) {
+                    this.flag("entity=" + player.attackedEntity.getName() + " , behind player");
+                }
             }
         }
     }

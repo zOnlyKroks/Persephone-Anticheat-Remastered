@@ -20,7 +20,7 @@ public class UltraVelocityA extends Check {
             if(player.bukkitPlayer.isGliding()){
                 if (player.bukkitPlayer.getVelocity().getX() > 100 || player.bukkitPlayer.getVelocity().getX() < -100 || player.bukkitPlayer.getVelocity().getZ() > 100 || player.bukkitPlayer.getVelocity().getZ() < -100) {
                     player.bukkitPlayer.setVelocity(new Vector(0, 0, 0));
-                    flag("Flagged for ultraVelocity"   );
+                    flag("Flagged for ultraVelocity");
                 }else if (player.bukkitPlayer.getVelocity().equals(new Vector(0, 0, 0)) ||player.lastY == player.currentY || player.lastX == player.currentX || player.lastZ == player.currentZ){
                     player.bukkitPlayer.setGliding(false);
                     flag("Flagged for elytra ooga booga");

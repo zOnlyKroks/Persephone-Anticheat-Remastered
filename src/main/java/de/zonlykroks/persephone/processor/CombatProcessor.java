@@ -11,6 +11,7 @@ import de.zonlykroks.persephone.Persephone;
 import de.zonlykroks.persephone.check.npc.NPC;
 import de.zonlykroks.persephone.check.npc.NPCManager;
 import de.zonlykroks.persephone.util.PersephonePlayer;
+import io.github.retrooper.packetevents.util.SpigotReflectionUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
@@ -33,22 +34,20 @@ public class CombatProcessor extends PacketListenerAbstract {
 
             if(wrapperPlayClientInteractEntity.getAction() == WrapperPlayClientInteractEntity.InteractAction.ATTACK) {
                 persephonePlayer.isAttacking = true;
-                Bukkit.getScheduler().callSyncMethod(Persephone.persephone,() -> {
-                    for(Entity entity : persephonePlayer.bukkitPlayer.getWorld().getEntities()) {
-                        if (NPCManager.playerToEntityID.values().stream().map(npc -> npc.getEntityId() == wrapperPlayClientInteractEntity.getEntityId()).toList().size() != 0) {
-                            if (entity.getLocation().toVector().equals(new Vector(wrapperPlayClientInteractEntity.getTarget().get().x, wrapperPlayClientInteractEntity.getTarget().get().y, wrapperPlayClientInteractEntity.getTarget().get().z))) {
 
-                                System.out.println("Found entity");
+                Entity entity = SpigotReflectionUtil.getEntityById(wrapperPlayClientInteractEntity.getEntityId());
 
-                                persephonePlayer.lastAttackedEntity = persephonePlayer.attackedEntity;
-                                persephonePlayer.attackedEntity = entity;
-
-                                persephonePlayer.lastHitTicks = 0;
-                            }
-                        }
+                for (NPC value : NPCManager.playerToEntityID.values()) {
+                    if(value.getEntityId() == wrapperPlayClientInteractEntity.getEntityId()) {
+                        persephonePlayer.lastHitTicks++;
+                        return;
                     }
-                    return true;
-                });
+                }
+
+                persephonePlayer.lastAttackedEntity = persephonePlayer.attackedEntity;
+                persephonePlayer.attackedEntity = entity;
+
+                persephonePlayer.lastHitTicks = 0;
             }
         }else if(event.getPacketType() == PacketType.Play.Client.ANIMATION) {
             WrapperPlayClientAnimation wrapperPlayClientAnimation = new WrapperPlayClientAnimation(event);
