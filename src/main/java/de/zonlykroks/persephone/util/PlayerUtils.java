@@ -8,9 +8,6 @@ import org.bukkit.entity.Player;
 @UtilityClass
 public class PlayerUtils {
 
-    public static final double PLAYER_WIDTH = .6;
-    private static final MaterialCheck CHECK_STAIR, CHECK_STEP;
-
     public static boolean isOnClimbable(Player player) {
         if(player.getLocation().getBlock().getType() == Material.LADDER || player.getLocation().getBlock().getType() == Material.VINE ){
             return true;
@@ -45,46 +42,5 @@ public class PlayerUtils {
             }
         }
         return false;
-    }
-
-    public static boolean isStepping(Location location) {
-        return isColliding(location, CHECK_STAIR) || isColliding(location, CHECK_STEP);
-    }
-
-    public static boolean isColliding(Location location, MaterialCheck material) {
-        double d = PLAYER_WIDTH/2;
-        return material.checkMaterial(location)
-                || material.checkMaterial(location.clone().add( d, 0, 0))
-                || material.checkMaterial(location.clone().add(-d, 0, 0))
-                || material.checkMaterial(location.clone().add( d, 0,  d))
-                || material.checkMaterial(location.clone().add(-d, 0,  d))
-                || material.checkMaterial(location.clone().add( d, 0, -d))
-                || material.checkMaterial(location.clone().add(-d, 0, -d))
-                || material.checkMaterial(location.clone().add(0,  0, -d))
-                || material.checkMaterial(location.clone().add(0,  0,  d));
-    }
-
-    static {
-        CHECK_STAIR = new MaterialCheck() {
-
-            @Override
-            public boolean checkMaterial(Material material) {
-                return switch (material) {
-                    case ACACIA_STAIRS, BRICK_STAIRS, COBBLESTONE_STAIRS, DARK_OAK_STAIRS, NETHER_BRICK_STAIRS, QUARTZ_STAIRS, RED_SANDSTONE_STAIRS, SANDSTONE_STAIRS ->
-                            true;
-                    default -> false;
-                };
-            }
-        };
-        CHECK_STEP = new MaterialCheck() {
-
-            @Override
-            public boolean checkMaterial(Material material) {
-                return switch (material) {
-                    case LEGACY_STEP, LEGACY_WOOD_STEP -> true;
-                    default -> false;
-                };
-            }
-        };
     }
 }

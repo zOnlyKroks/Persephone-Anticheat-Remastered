@@ -19,16 +19,13 @@ public class NoFallA extends Check {
         if(player.isPlayerExempt()) return;
 
         if(WrapperPlayClientPlayerFlying.isFlying(event.getPacketType())) {
-            final boolean onGround = player.isClientOnGround(); //Spoofable
-            final boolean nearGround = PlayerUtils.isOnGround(player.bukkitPlayer.getLocation()); //Not spoofable (Server-Side calculation)
+            final boolean exempt = player.bukkitPlayer.isInsideVehicle() || PlayerUtils.isOnClimbable(player.bukkitPlayer) || player.serverGround || player.lastServerGround || player.lastLastServerGround;
 
-            final boolean exempt = player.bukkitPlayer.isInsideVehicle() || PlayerUtils.isOnClimbable(player.bukkitPlayer);
-
-            if(onGround && !nearGround && !exempt) {
+            if(player.clientOnGround != player.serverGround && player.clientLastOnGround != player.lastServerGround && !exempt) {
                 if(++buffer > 4) {
                     this.flag("aT=" + player.airTicks);
                 }
-            }else if(buffer > 0) buffer -= 0.05D;
+            }else if(buffer > 0) buffer -= 0.25D;
         }
     }
 }

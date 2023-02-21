@@ -1,12 +1,13 @@
 package de.zonlykroks.persephone.check;
 
-import com.github.retrooper.packetevents.event.PacketListenerAbstract;
+import com.github.retrooper.packetevents.event.PacketReceiveEvent;
+import com.github.retrooper.packetevents.event.PacketSendEvent;
 import de.zonlykroks.persephone.Persephone;
 import de.zonlykroks.persephone.util.PersephonePlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
-public class Check extends PacketListenerAbstract {
+public class Check{
 
     public int violations;
     public int setbackVL;
@@ -38,6 +39,9 @@ public class Check extends PacketListenerAbstract {
                 if(damage)
                     player.bukkitPlayer.damage(damageAmount);
 
+                if(setback)
+                    player.bukkitPlayer.teleport(player.from);
+
                 return true;
             });
 
@@ -48,5 +52,12 @@ public class Check extends PacketListenerAbstract {
             totalFailedTimes++;
             violations = 0;
         }
+    }
+
+
+    public void onPacketReceive(PacketReceiveEvent event) {
+    }
+
+    public void onPacketSend(PacketSendEvent event) {
     }
 }

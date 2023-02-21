@@ -9,10 +9,6 @@ import java.util.Collection;
 
 public class MathUtil {
 
-    public static double getAverage(final Collection<? extends Number> data) {
-        return data.stream().mapToDouble(Number::doubleValue).average().orElse(0D);
-    }
-
     public static double trim(int degree, double d) {
         DecimalFormat twoDForm = new DecimalFormat("#.#" + "#".repeat(Math.max(0, degree - 1)));
         return Double.parseDouble(twoDForm.format(d).replaceAll(",", "."));

@@ -1,7 +1,5 @@
 package de.zonlykroks.persephone.listener;
 
-import de.zonlykroks.persephone.check.npc.NPC;
-import de.zonlykroks.persephone.check.npc.NPCManager;
 import de.zonlykroks.persephone.util.PersephonePlayer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,5 +17,4 @@ public class PlayerJoinQuitListener implements Listener {
     public void onQuit(PlayerQuitEvent event) {
         PersephonePlayer.removePlayer(event.getPlayer().getUniqueId());
     }
-
 }

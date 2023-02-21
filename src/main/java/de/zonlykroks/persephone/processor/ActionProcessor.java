@@ -18,23 +18,25 @@ public class ActionProcessor extends PacketListenerAbstract {
 
     @Override
     public void onPacketReceive(PacketReceiveEvent event) {
-        if(event.getPacketType() == PacketType.Play.Client.ENTITY_ACTION) {
-            WrapperPlayClientEntityAction wrapperPlayClientEntityAction = new WrapperPlayClientEntityAction(event);
-            persephonePlayer.sendingAction = true;
+        if(persephonePlayer.bukkitPlayer.getEntityId() == event.getUser().getEntityId()) {
+            if(event.getPacketType() == PacketType.Play.Client.ENTITY_ACTION) {
+                WrapperPlayClientEntityAction wrapperPlayClientEntityAction = new WrapperPlayClientEntityAction(event);
+                persephonePlayer.sendingAction = true;
 
-            switch (wrapperPlayClientEntityAction.getAction()) {
-                case START_SPRINTING:
-                    persephonePlayer.sprinting = true;
-                    break;
-                case STOP_SPRINTING:
-                    persephonePlayer.sprinting = false;
-                    break;
-                case START_SNEAKING:
-                    persephonePlayer.sneaking = true;
-                    break;
-                case STOP_SNEAKING:
-                    persephonePlayer.sneaking = false;
-                    break;
+                switch (wrapperPlayClientEntityAction.getAction()) {
+                    case START_SPRINTING:
+                        persephonePlayer.sprinting = true;
+                        break;
+                    case STOP_SPRINTING:
+                        persephonePlayer.sprinting = false;
+                        break;
+                    case START_SNEAKING:
+                        persephonePlayer.sneaking = true;
+                        break;
+                    case STOP_SNEAKING:
+                        persephonePlayer.sneaking = false;
+                        break;
+                }
             }
         }
     }

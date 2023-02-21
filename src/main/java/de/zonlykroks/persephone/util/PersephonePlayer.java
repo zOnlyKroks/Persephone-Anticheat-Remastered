@@ -1,6 +1,8 @@
 package de.zonlykroks.persephone.util;
 
+import com.github.retrooper.packetevents.protocol.player.InteractionHand;
 import com.github.retrooper.packetevents.protocol.world.BlockFace;
+import com.github.retrooper.packetevents.util.Vector3f;
 import de.zonlykroks.persephone.check.PlayerSpecificCheckInitiator;
 import de.zonlykroks.persephone.processor.*;
 import lombok.Getter;
@@ -58,6 +60,8 @@ public class PersephonePlayer {
 
     private final OtherProcessor otherProcessor;
 
+    public InteractionHand useItemHand;
+
     public boolean sprinting, sneaking, sendingAction, placing, isAttacking,isSwinging;
 
     public boolean isWindowOpen;
@@ -66,9 +70,14 @@ public class PersephonePlayer {
 
     public int lastHitTicks = 0;
 
-    public float friction;
+    public float belowBlockFrictionCurrentLocation;
 
-    public double adjusted;
+    public Vector3f cursorPosition;
+
+    public InteractionHand currentBlockPlaceInteractionHand;
+
+    public int blockPlaceSequence;
+
 
     public PersephonePlayer(Player player) {
         this.bukkitPlayer = player;
@@ -83,7 +92,7 @@ public class PersephonePlayer {
 
 
         playerSpecificCheckInitiator = new PlayerSpecificCheckInitiator();
-        playerSpecificCheckInitiator.registerChecksForPlayer(player);
+        playerSpecificCheckInitiator.registerChecksForPlayer(this);
     }
 
     public static PersephonePlayer getPlayer(UUID uuid) {

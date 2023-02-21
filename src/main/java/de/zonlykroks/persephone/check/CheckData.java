@@ -13,7 +13,7 @@ public @interface CheckData {
     String checkType() default "";
     boolean experimental() default false;
     int setbackVl() default 10;
-    boolean setback() default true;
+    boolean setback() default false;
 
     boolean damage() default false;
     float damageAmount() default 0.5F;

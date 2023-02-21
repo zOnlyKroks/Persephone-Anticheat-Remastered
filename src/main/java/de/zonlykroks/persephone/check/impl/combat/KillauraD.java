@@ -11,9 +11,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.FluidCollisionMode;
 import org.bukkit.util.RayTraceResult;
 
-@CheckData(name = "Reach", checkType = "A")
-public class ReachA extends Check {
-    public ReachA(PersephonePlayer player) {
+@CheckData(name = "Killaura", checkType = "D",setbackVl = 0)
+public class KillauraD extends Check {
+
+    public KillauraD(PersephonePlayer player) {
         super(player);
     }
 
@@ -25,18 +26,14 @@ public class ReachA extends Check {
 
         if(wrapperPlayClientInteractEntity.getAction() != WrapperPlayClientInteractEntity.InteractAction.ATTACK) return;
 
-        if(player.attackedEntity == null) return;
-
         Bukkit.getScheduler().callSyncMethod(Persephone.persephone, () -> {
+            RayTraceResult rayTraceResult = player.bukkitPlayer.getWorld().rayTrace(player.bukkitPlayer.getEyeLocation(),player.bukkitPlayer.getLocation().getDirection(),5, FluidCollisionMode.NEVER,false,0.6,entity -> entity != player.bukkitPlayer);
 
-            RayTraceResult result = player.bukkitPlayer.getWorld().rayTrace(player.bukkitPlayer.getLocation(),player.bukkitPlayer.getEyeLocation().toVector(),3.00001, FluidCollisionMode.NEVER,false,0.8F,entity -> entity.getEntityId() != player.bukkitPlayer.getEntityId());
-
-            if(result == null || result.getHitEntity() == null) {
-                if (++buffer > 1) {
-                    this.flag("max=3.00001 ,cur=" + player.bukkitPlayer.getLocation().distance(player.attackedEntity.getLocation()));
-                }
-            }else buffer -= buffer > 0 ? 0.5F : 0;
-
+            if(rayTraceResult == null) {
+                this.flag(" raytrace is null, still hit entity");
+            }else if(rayTraceResult.getHitEntity() == null) {
+                this.flag(" raytrace not null, still hit entity tho he is out of sight");
+            }
             return true;
         });
     }

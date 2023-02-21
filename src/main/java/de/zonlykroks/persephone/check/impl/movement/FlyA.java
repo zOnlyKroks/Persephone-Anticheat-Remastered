@@ -6,6 +6,8 @@ import de.zonlykroks.persephone.check.Check;
 import de.zonlykroks.persephone.check.CheckData;
 import de.zonlykroks.persephone.util.PersephonePlayer;
 import de.zonlykroks.persephone.util.PlayerUtils;
+import org.bukkit.Material;
+import org.bukkit.inventory.EquipmentSlot;
 
 @CheckData(name = "Fly", checkType = "A")
 public class FlyA extends Check {
@@ -21,6 +23,10 @@ public class FlyA extends Check {
         if(player.isPlayerExempt()) return;
 
         if(!WrapperPlayClientPlayerFlying.isFlying(event.getPacketType())) return;
+
+        if(player.bukkitPlayer.getInventory().getItem(EquipmentSlot.CHEST) != null) {
+            if(player.bukkitPlayer.getInventory().getItem(EquipmentSlot.CHEST).getType() == Material.ELYTRA) return;
+        }
 
         if(player.bukkitPlayer.getVehicle() != null || player.bukkitPlayer.getLocation().getBlock().isLiquid() ||  player.bukkitPlayer.getLocation().add(0,-1,0).getBlock().isLiquid() || PlayerUtils.isOnGround(player.bukkitPlayer.getLocation())) return;
 

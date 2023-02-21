@@ -20,14 +20,19 @@ public class BlockProcessor extends PacketListenerAbstract {
 
     @Override
     public void onPacketReceive(PacketReceiveEvent event) {
-        if(event.getPacketType() == PacketType.Play.Client.PLAYER_BLOCK_PLACEMENT) {
-            persephonePlayer.placing = true;
+        if(persephonePlayer.bukkitPlayer.getEntityId() == event.getUser().getEntityId()) {
+            if(event.getPacketType() == PacketType.Play.Client.PLAYER_BLOCK_PLACEMENT) {
+                persephonePlayer.placing = true;
 
-            WrapperPlayClientPlayerBlockPlacement wrapperPlayClientPlayerBlockPlacement = new WrapperPlayClientPlayerBlockPlacement(event);
-            persephonePlayer.placedBlockPosition = new Location(persephonePlayer.bukkitPlayer.getWorld(),wrapperPlayClientPlayerBlockPlacement.getBlockPosition().x,wrapperPlayClientPlayerBlockPlacement.getBlockPosition().y,wrapperPlayClientPlayerBlockPlacement.getBlockPosition().z);
-            persephonePlayer.placedBlockFace = wrapperPlayClientPlayerBlockPlacement.getFace();
-        }else if(WrapperPlayClientPlayerFlying.isFlying(event.getPacketType())) {
-            persephonePlayer.placing = false;
+                WrapperPlayClientPlayerBlockPlacement wrapperPlayClientPlayerBlockPlacement = new WrapperPlayClientPlayerBlockPlacement(event);
+                persephonePlayer.placedBlockPosition = new Location(persephonePlayer.bukkitPlayer.getWorld(),wrapperPlayClientPlayerBlockPlacement.getBlockPosition().x,wrapperPlayClientPlayerBlockPlacement.getBlockPosition().y,wrapperPlayClientPlayerBlockPlacement.getBlockPosition().z);
+                persephonePlayer.placedBlockFace = wrapperPlayClientPlayerBlockPlacement.getFace();
+                persephonePlayer.cursorPosition = wrapperPlayClientPlayerBlockPlacement.getCursorPosition();
+                persephonePlayer.currentBlockPlaceInteractionHand = wrapperPlayClientPlayerBlockPlacement.getHand();
+                persephonePlayer.blockPlaceSequence = wrapperPlayClientPlayerBlockPlacement.getSequence();
+            }else if(WrapperPlayClientPlayerFlying.isFlying(event.getPacketType())) {
+                persephonePlayer.placing = false;
+            }
         }
     }
 }
