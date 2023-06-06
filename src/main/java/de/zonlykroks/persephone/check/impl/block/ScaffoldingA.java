@@ -2,10 +2,8 @@ package de.zonlykroks.persephone.check.impl.block;
 
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
-import com.github.retrooper.packetevents.protocol.world.BlockFace;
 import de.zonlykroks.persephone.check.Check;
 import de.zonlykroks.persephone.check.CheckData;
-import de.zonlykroks.persephone.util.LocationUtils;
 import de.zonlykroks.persephone.util.PersephonePlayer;
 import org.bukkit.Material;
 import org.bukkit.util.RayTraceResult;

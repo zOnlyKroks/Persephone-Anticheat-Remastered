@@ -40,7 +40,7 @@ public class ProtocollH extends Check {
             boolean hasID = false;
 
             for (Pair<Long, Long> iterator : keepaliveMap) {
-                if (iterator.getFirst() == id) {
+                if (iterator.first() == id) {
                     hasID = true;
                     break;
                 }
@@ -53,7 +53,7 @@ public class ProtocollH extends Check {
                 do {
                     data = keepaliveMap.poll();
                     if (data == null) break;
-                } while (data.getFirst() != id);
+                } while (data.first() != id);
             }
         }
     }

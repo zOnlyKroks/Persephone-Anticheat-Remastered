@@ -2,25 +2,10 @@ package de.zonlykroks.persephone.util;
 
 import java.util.Objects;
 
-public class Pair<A, B> {
-    private final A first;
-    private final B second;
-
-    public Pair(A first, B second) {
-        this.first = first;
-        this.second = second;
-    }
+public record Pair<A, B>(A first, B second) {
 
     public static <T, K> Pair<T, K> of(T a, K b) {
         return new Pair<T, K>(a, b);
-    }
-
-    public A getFirst() {
-        return first;
-    }
-
-    public B getSecond() {
-        return second;
     }
 
     @Override
